@@ -2,6 +2,9 @@
 var currentHour = "";
 var timeFormat = "";
 var mockTime = 1;
+//Create an array to push objects to local storage w/ an index
+var messageArray = JSON.parse(localStorage.getItem("messages")) || [];
+var index = 0;
 //Timer to constantly update our time as well as call our function periodically
 function timer(){
     stopwatch = setInterval(function(){
@@ -147,21 +150,17 @@ function checkFuture(){
     });
 };
 //When user clicks the save button, we save their message
-// function checkMsg(){
-//     $(".timeblock").each(function(){
-        var index = 0;
-//         //Add an on click for every button clicked
-        $(".saveBtn").on("click",function(){
-            console.log("clicking!");
-            $(this).parent().children("textarea").html = $(this).parent().children("textarea").val();
-            //Create an array to push objects to local storage
-            var messageArray = JSON.parse(localStorage.getItem("messages")) || [];
-            //Variable takes in value of the textarea field
-            var textAreaField = $(this).parent().children("textarea").html();
-            messageArray.push({message: textAreaField});
-            localStorage.setItem("messages", JSON.stringify(messageArray));
-            textAreaField = messageArray[0].message;
-            index++;
-        });
-//     });
-// };
+//Add an on click for every button clicked
+$(".saveBtn").on("click",function(){
+    console.log("clicking!");
+    //Variable takes in value of the textarea field
+    var textAreaField = $(this).parent().children("textarea").val();
+    messageArray.push({message: textAreaField});
+    console.log(messageArray);
+    localStorage.setItem("messages", JSON.stringify(messageArray));
+    //Line 162 is displaying the text we saved but it isn't staying on the screen on reload, MUST FIX////
+    $(this).parent().children("textarea").text(messageArray[index].message);
+    textAreaField = messageArray[index];
+    index++;
+    console.log(index);
+});
