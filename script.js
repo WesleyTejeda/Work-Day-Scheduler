@@ -7,8 +7,8 @@ function timer(){
         timeFormat = moment().format('dddd, MMMM Do YYYY');
         $("#currentDay").text(timeFormat);
         checkPast();
-        checkPresent();
-        checkFuture();
+        // checkPresent();
+        // checkFuture();
     }, 1000);
 }
 timer();
@@ -16,6 +16,7 @@ timer();
 function checkPast(){
     console.log(currentHour);
     var tempHour = currentHour.split(":");
+    console.log(tempHour);
     $(".timeblock").each(function(){
         if($(this).children("div").html() == currentHour){
             $(this).children("textarea").addClass("past");
