@@ -1,6 +1,8 @@
 //Time
 var currentHour = "";
 var timeFormat = "";
+var mockTime = 1;
+//Timer to constantly update our time as well as call our function periodically
 function timer(){
     stopwatch = setInterval(function(){
         currentHour = moment().format('hA');
@@ -10,30 +12,38 @@ function timer(){
         checkPast();
         checkPresent();
         checkFuture();
+        // checkMsg();
+        mockTime++;
     }, 1000);
 }
 timer();
 //Create function to add past class to timeblock if current time > timeblock hour
 function checkPast(){
     $(".timeblock").each(function(){
+        //tempDivHour takes the value of timeblock
         var tempDivHour = $(this).children("div").html();
         var tempDivPMorAM = "";
         var tempCurrentPMorAM = "";
         var tempHour= currentHour;
         //Assigning PM or AM values taken from div child's timeblock hour
         /*Sloppy method below will fix with a better method, it's working but not effecient */
+        /**Assigning PM or AM values taken from div child's timeblock hour.
+        ///When timeblock's string is 3 characters long i.e 9AM,5PM,...--*/
         if(tempDivHour.length == 3){
             tempDivPMorAM = tempDivHour[1]+tempDivHour[2];
             tempDivHour = tempDivHour[0];
         }
+        //If timeblocks string is not 3, then it must be 4
         else {
             tempDivPMorAM = tempDivHour[2]+tempDivHour[3];
             tempDivHour = tempDivHour[0]+tempDivHour[1];
         }
+        //When current time's string is 3 characters long i.e 9AM,5PM,...
         if(tempHour.length == 3){
             tempCurrentPMorAM = tempHour[1]+tempHour[2];
             tempHour = tempHour[0];
         }
+        //If current time's string is not 3, then it must be 4
         else {
             tempCurrentPMorAM = tempHour[2]+tempHour[3];
             tempHour = tempHour[0]+tempHour[1];
@@ -48,17 +58,21 @@ function checkPast(){
         //then 12PM is technically larger but isn't logical */
         if(tempDivHour < tempHour && tempDivPMorAM == tempCurrentPMorAM && tempDivHour !== 12){
             //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
-            $(this).children("textarea").addClass("past");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
         /*In the next if statement we account for 12PM timeblock. When current time is 1PM
         //we want 12PM timeblock to be in the past */
         else if( tempDivHour == 12 && tempHour >= 1 && tempCurrentPMorAM == "PM"){
             //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
-            $(this).children("textarea").addClass("past");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
+        }
+        //When its 1AM and we want 12AM timeblock to be in the past we need this statement
+        else if(tempDivHour == 12 && tempHour >= 1 && tempDivPMorAM == "AM" && tempCurrentPMorAM == "AM" ){
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
         if(tempDivPMorAM == "AM" && tempCurrentPMorAM == "PM"){
             //If current time is in PM and Div timeblock is in AM, then timeblock is in past
-            $(this).children("textarea").addClass("past");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
 
     });
@@ -71,31 +85,36 @@ function checkPresent(){
         //The format for the hours at this stage is HPM == HPM i.e 5PM == 5PM
         if($(this).children("div").html() == currentHour){
             //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
-            $(this).children("textarea").addClass("present");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea present");
         }
     });
 }
 //Create function to add future class to timeblock if current time < timeblock hour
 function checkFuture(){
     $(".timeblock").each(function(){
+        //tempDivHour takes the value of timeblock
         var tempDivHour = $(this).children("div").html();
         var tempDivPMorAM = "";
         var tempCurrentPMorAM = "";
         var tempHour= currentHour;
         /*Sloppy method below will fix with a better method, it's working but not effecient */
-        /**Assigning PM or AM values taken from div child's timeblock hour**/
+        /**Assigning PM or AM values taken from div child's timeblock hour.
+        ///When timeblock's string is 3 characters long i.e 9AM,5PM,...--*/
         if(tempDivHour.length == 3){
             tempDivPMorAM = tempDivHour[1]+tempDivHour[2];
             tempDivHour = tempDivHour[0];
         }
+        //If timeblocks string is not 3, then it must be 4
         else {
             tempDivPMorAM = tempDivHour[2]+tempDivHour[3];
             tempDivHour = tempDivHour[0]+tempDivHour[1];
         }
+        //When current time's string is 3 characters long i.e 9AM,5PM,...
         if(tempHour.length == 3){
             tempCurrentPMorAM = tempHour[1]+tempHour[2];
             tempHour = tempHour[0];
         }
+        //If current time's string is not 3, then it must be 4
         else {
             tempCurrentPMorAM = tempHour[2]+tempHour[3];
             tempHour = tempHour[0]+tempHour[1];
@@ -105,17 +124,43 @@ function checkFuture(){
         //Turning our number strings into integers to compare
         tempDivHour = parseInt(tempDivHour);
         tempHour = parseInt(tempHour);
-        //If timeblock hour is great than current hour and they have same type of PM or AM
+        //If timeblock hour is greater than current hour and they have same type of PM or AM
         /*We have to ignore timeblock 12PM because if current time is 1PM, then 12PM is larger but isn't logical */
-        if(tempDivHour > tempHour && tempDivPMorAM == tempCurrentPMorAM && tempDivHour !== 12){
-            $(this).children("textarea").addClass("future");
+        if(tempDivHour > tempHour && tempDivPMorAM == tempCurrentPMorAM  && tempDivHour !== 12){
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
         else if( tempDivHour == 12 && tempDivHour == "PM" && tempHour < tempDivHour && tempCurrentPMorAM == "AM"){
-            $(this).children("textarea").addClass("future");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
-        if(tempDivPMorAM == "PM" && tempCurrentPMorAM == "AM"){
+        else if( tempDivHour >=1 && tempHour == 12 && tempCurrentPMorAM == tempDivPMorAM && tempDivHour !== tempHour){
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+        }
+        if(tempDivHour == 12 && tempDivHour == "AM" && tempHour > tempDivHour && tempCurrentPMorAM == "AM"){
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+        }
+        else 
+            if(tempDivPMorAM == "PM" && tempCurrentPMorAM == "AM"){
             //If current time is in AM and Div timeblock is in PM, then timeblock is in future
-            $(this).children("textarea").addClass("future");
+            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
     });
 };
+//When user clicks the save button, we save their message
+// function checkMsg(){
+//     $(".timeblock").each(function(){
+        var index = 0;
+//         //Add an on click for every button clicked
+        $(".saveBtn").on("click",function(){
+            console.log("clicking!");
+            $(this).parent().children("textarea").html = $(this).parent().children("textarea").val();
+            //Create an array to push objects to local storage
+            var messageArray = JSON.parse(localStorage.getItem("messages")) || [];
+            //Variable takes in value of the textarea field
+            var textAreaField = $(this).parent().children("textarea").html();
+            messageArray.push({message: textAreaField});
+            localStorage.setItem("messages", JSON.stringify(messageArray));
+            textAreaField = messageArray[0].message;
+            index++;
+        });
+//     });
+// };
