@@ -1,7 +1,6 @@
 //Time
 var currentHour = "";
 var timeFormat = "";
-var mockTime = 1;
 //Create an array to push objects to local storage w/ an index
 var messageArray = JSON.parse(localStorage.getItem("messages")) || [];
 //Timer to constantly update our time as well as call our function periodically
@@ -15,7 +14,6 @@ function timer(){
         checkPresent();
         checkFuture();
         updateMessages();
-        mockTime++;
     }, 1000);
 }
 timer();
@@ -64,15 +62,17 @@ function checkPast(){
         /*In the next if statement we account for 12PM timeblock. When current time is 1PM
         //we want 12PM timeblock to be in the past */
         else if( tempDivHour == 12 && tempHour >= 1 && tempCurrentPMorAM == "PM"){
-            //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
+            //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
         //When its 1AM and we want 12AM timeblock to be in the past so we need this statement
         else if(tempDivHour == 12 && tempHour >= 1 && tempDivPMorAM == "AM" && tempCurrentPMorAM == "AM" ){
+            //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
         //If current time is in PM and Div timeblock is in AM, then AM timeblocks are in past
         if(tempDivPMorAM == "AM" && tempCurrentPMorAM == "PM"){
+            //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
         }
 
@@ -132,17 +132,20 @@ function checkFuture(){
         }
         //We need to account for 12pm timeblock when the current time is 1pm and later
         else if( tempDivHour == 12 && tempDivHour == "PM" && tempHour < tempDivHour && tempCurrentPMorAM == "AM"){
+            //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
         /*This takes into account when the time is 12pm or 12am 
         //At 12pm, none of the 1pm =< timeblocks will show future class
         //At 12am, none of the 1am =< timeblocks will show future class so we must account for that*/
         else if( tempDivHour >=1 && tempHour == 12 && tempCurrentPMorAM == tempDivPMorAM && tempDivHour !== tempHour){
+            //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
         else 
             //When current time is in AM it's assumed that timeblocks in PM will be in the future
             if(tempDivPMorAM == "PM" && tempCurrentPMorAM == "AM"){
+            //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
             $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
         }
     });
@@ -150,7 +153,6 @@ function checkFuture(){
 //When user clicks the save button, we save their message
 //Add an on click for every button clicked
 $(".saveBtn").on("click",function(){
-    // console.log("clicking!");
     //Variable takes in value of the textarea field
     var textAreaField = $(this).parent().children("textarea").val();
     var currentTimeBlock = $(this).parent().children("div").html();
@@ -169,11 +171,8 @@ function updateMessages(){
         $(".timeblock").each(function(){
             //Since the timeblock is the parent of the actual div that houses our value this is how we call it
             //and compare it to our timeblock that was in our object
-            if($(this).children("div").text() === timeblock){
-                
-                console.log("matching");
+            if($(this).children("div").text() === timeblock)             
                 $(this).children("textarea").attr("placeholder", message);
-            }
         });
     }
 };
@@ -183,5 +182,4 @@ $("#clear").on("click", function(){
     messageArray = [];
     //We must pass the string "[]" to simulate an empty array
     localStorage.setItem("messages","[]");
-    console.log("Cleared!")
 });
