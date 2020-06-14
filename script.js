@@ -4,7 +4,6 @@ var timeFormat = "";
 var mockTime = 1;
 //Create an array to push objects to local storage w/ an index
 var messageArray = JSON.parse(localStorage.getItem("messages")) || [];
-var index = 0;
 //Timer to constantly update our time as well as call our function periodically
 function timer(){
     stopwatch = setInterval(function(){
@@ -15,7 +14,7 @@ function timer(){
         checkPast();
         checkPresent();
         checkFuture();
-        // checkMsg();
+        updateMessages();
         mockTime++;
     }, 1000);
 }
@@ -28,7 +27,6 @@ function checkPast(){
         var tempDivPMorAM = "";
         var tempCurrentPMorAM = "";
         var tempHour= currentHour;
-        //Assigning PM or AM values taken from div child's timeblock hour
         /*Sloppy method below will fix with a better method, it's working but not effecient */
         /**Assigning PM or AM values taken from div child's timeblock hour.
         ///When timeblock's string is 3 characters long i.e 9AM,5PM,...--*/
@@ -152,15 +150,38 @@ function checkFuture(){
 //When user clicks the save button, we save their message
 //Add an on click for every button clicked
 $(".saveBtn").on("click",function(){
-    console.log("clicking!");
+    // console.log("clicking!");
     //Variable takes in value of the textarea field
     var textAreaField = $(this).parent().children("textarea").val();
-    messageArray.push({message: textAreaField});
-    console.log(messageArray);
+    var currentTimeBlock = $(this).parent().children("div").html();
+    //We send a message text and a current timeblock of the button clicked
+    messageArray.push({message: textAreaField, timeblock: currentTimeBlock});
+    //We send the messageArray that holds our object to localstorage. to retrieve periodically
     localStorage.setItem("messages", JSON.stringify(messageArray));
-    //Line 162 is displaying the text we saved but it isn't staying on the screen on reload, MUST FIX////
-    $(this).parent().children("textarea").text(messageArray[index].message);
-    textAreaField = messageArray[index];
-    index++;
-    console.log(index);
+});
+//Loop through message array to post timeblock messages that are saved; This is called by our timer every second
+function updateMessages(){
+    for(var i=0; i < messageArray.length; i++){
+        //Place our property values into an easily accesible variable
+        var message = messageArray[i].message;
+        var timeblock = messageArray[i].timeblock;
+        //Test each timeblock to see if we can find the timeblock that our object was created from
+        $(".timeblock").each(function(){
+            //Since the timeblock is the parent of the actual div that houses our value this is how we call it
+            //and compare it to our timeblock that was in our object
+            if($(this).children("div").text() === timeblock){
+                
+                console.log("matching");
+                $(this).children("textarea").attr("placeholder", message);
+            }
+        });
+    }
+};
+//Clear messages in our local storage
+$("#clear").on("click", function(){
+    //Empty messageArray
+    messageArray = [];
+    //We must pass the string "[]" to simulate an empty array
+    localStorage.setItem("messages","[]");
+    console.log("Cleared!")
 });
