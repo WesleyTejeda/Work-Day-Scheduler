@@ -55,54 +55,54 @@ function assignPastPresentFuture(){
         //then 12PM is technically larger but isn't logical */
         if(tempDivHour < tempHour && tempDivPMorAM == tempCurrentPMorAM && tempDivHour !== 12){
             //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
+            $(this).children("textarea").addClass("past");
         }
         /*In the next if statement we account for 12PM timeblock. When current time is 1PM
         //we want 12PM timeblock to be in the past */
         else if( tempDivHour == 12 && tempHour >= 1 && tempCurrentPMorAM == "PM"){
             //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
+            $(this).children("textarea").addClass("past");
         }
         //When its 1AM and we want 12AM timeblock to be in the past so we need this statement
         else if(tempDivHour == 12 && tempHour >= 1 && tempDivPMorAM == "AM" && tempCurrentPMorAM == "AM" ){
             //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
+            $(this).children("textarea").addClass("past");
         }
         //If current time is in PM and Div timeblock is in AM, then AM timeblocks are in past
         if(tempDivPMorAM == "AM" && tempCurrentPMorAM == "PM"){
             //If the timeblock is in the past then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea past");
+            $(this).children("textarea").addClass("past");
         }
     /**PRESENT */
         //Targetting the div child in timeblock to get the hour of the block and compare it to current time hour
         //The format for the hours at this stage is HPM == HPM i.e 5PM == 5PM
         if($(this).children("div").html() == currentHour){
             //If the hours are the same then  present class gets added to textarea child element  to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea present");
+            $(this).children("textarea").addClass("present");
         }
     /*FUTURE */
         //If timeblock hour is greater than current hour and they have same type of PM or AM
         /*We have to ignore timeblock 12PM because if current time is 1PM, then 12PM is larger but isn't logical */
         if(tempDivHour > tempHour && tempDivPMorAM == tempCurrentPMorAM  && tempDivHour !== 12){
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+            $(this).children("textarea").addClass("future");
         }
         //We need to account for 12pm timeblock when the current time is 1pm and later
         else if( tempDivHour == 12 && tempDivHour == "PM" && tempHour < tempDivHour && tempCurrentPMorAM == "AM"){
             //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+            $(this).children("textarea").addClass("future");
         }
         /*This takes into account when the time is 12pm or 12am 
         //At 12pm, none of the 1pm =< timeblocks will show future class
         //At 12am, none of the 1am =< timeblocks will show future class so we must account for that*/
         else if( tempDivHour >=1 && tempHour == 12 && tempCurrentPMorAM == tempDivPMorAM && tempDivHour !== tempHour){
             //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+            $(this).children("textarea").addClass("future");
         }
         else 
             //When current time is in AM it's assumed that timeblocks in PM will be in the future
             if(tempDivPMorAM == "PM" && tempCurrentPMorAM == "AM"){
             //If the timeblock is in the future then we overwrite these classes to textarea child element to get the textbox color
-            $(this).children("textarea").attr("class","col-8 col-lg-8 col-md-8 col-sm-8 textarea future");
+            $(this).children("textarea").addClass("future");
         }
     });
 };
