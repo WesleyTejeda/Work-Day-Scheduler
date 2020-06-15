@@ -8,6 +8,8 @@ My GitHub : [https://github.com/wesleytejeda/Work-Day-Scheduler]
 ## General
 In this repository I contained files for a website that displays a schedule for the current day. This page contains timeblocks from 9AM-5PM and each timeblock is marked with their appropriate class to display whether the block is in the past, present, or future. The user can write a message in the textbox and when they save and refresh the message will still be there.
 
+## Demo
+!["Work schedule in action"](assets/demo.gif)
 ## My Approach in Detail
 *Before I made my ```script.js``` file I decided that my timeblock was going to be the parent div of the timeblock information. This was done so that I could access the children simpler; straight from the parent rather than assigning the timeblock class to the div that contains the time and having to refer back to the parent and then go back to either the save button or the textarea.*
 
