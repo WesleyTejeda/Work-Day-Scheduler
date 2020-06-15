@@ -46,6 +46,15 @@ textarea{
   border-top: 1px dashed #000000;
   text-align: end;
   padding-top: 25px;
+  
+}
+
+.blocks10-11{
+  padding-right: 5px;
+}
+
+.block12{
+  padding-right: 6px;
 }
 
 .past {
